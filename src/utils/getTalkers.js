@@ -8,15 +8,22 @@ const readTalkerData = async () => {
     const contentFile = await fs.readFile(join(__dirname, path), 'utf-8');
     return JSON.parse(contentFile);
   } catch (error) {
-    return [];
+    return null;
   }
 };
 
-const getAllTalkers = async () => {
+const getAll = async () => {
   const talkers = await readTalkerData();
+  if (talkers === null) return [];
   return talkers;
 };
 
+const getById = async (id) => {
+  const talker = await readTalkerData();
+  return talker.find((person) => person.id === id);
+};
+
 module.exports = {
-  getAllTalkers,
+  getAll,
+  getById,
 }
