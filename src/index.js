@@ -1,5 +1,7 @@
 const express = require('express');
 const talkerRoutes = require('./routes/talkerRoutes');
+const validateEmail = require('./middlewares/validateEmail');
+const validatePassword = require('./middlewares/validatePassword');
 const generateToken = require('./utils/generateToken');
 
 const app = express();
@@ -15,13 +17,7 @@ app.get('/', (_request, response) => {
 
 app.use('/talker', talkerRoutes);
 
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-
-  if ([email, password].includes(undefined)) {
-    return res.status(401).json({ message: 'Campos ausentes!' });
-  }
-
+app.post('/login', validateEmail, validatePassword, (_req, res) => {
   const newToken = generateToken();
   res.status(200).json({ token: newToken });
 });
