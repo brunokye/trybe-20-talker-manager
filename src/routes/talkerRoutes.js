@@ -29,7 +29,6 @@ router.get('/search', validateToken, async (req, res) => {
     }
 
     if (!q) {
-      const talkers = await getTalkers.getAll();
       return res.status(200).json(talkers);
     }
     
@@ -42,9 +41,10 @@ router.get('/:id', async (req, res) => {
 
   if (talker) {
     return res.status(200).json(talker);
-  } else {
-    return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
-  }
+  } 
+    return res.status(404).json(
+      { message: 'Pessoa palestrante não encontrada' },
+    );
 });
 
 router.post('/', 
@@ -55,10 +55,10 @@ router.post('/',
     
     const newTalker = {
       id: talkers[talkers.length - 1].id + 1,
-      ...req.body
+      ...req.body,
     };
 
-    const allTalkers = JSON.stringify([...talkers, newTalker], null, 2)
+    const allTalkers = JSON.stringify([...talkers, newTalker], null, 2);
     await fs.writeFile(talkersPath, allTalkers);
 
     res.status(201).json({ ...newTalker });
