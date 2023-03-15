@@ -1,8 +1,9 @@
 const express = require('express');
 const talkerRoutes = require('./routes/talkerRoutes');
+const generateToken = require('./utils/generateToken');
+
 const validateEmail = require('./middlewares/validateEmail');
 const validatePassword = require('./middlewares/validatePassword');
-const generateToken = require('./utils/generateToken');
 
 const app = express();
 app.use(express.json());
